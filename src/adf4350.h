@@ -1,6 +1,8 @@
 #ifndef _ADF4350_H
 #define _ADF4350_H
 
+#define REF_CLK 10000000
+
 struct
 {
 	unsigned int control_bits	: 3;
@@ -73,5 +75,7 @@ struct
 	unsigned int ld_pin_mode	: 2;
 	unsigned int reserved_4		: 8;
 } register_5;
+
+int setFrequency(int frequency);
 
 #endif
