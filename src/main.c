@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "adf4350.h"
+#include "spi.h"
 
 int main(void)
 {
@@ -10,6 +11,10 @@ int main(void)
 		setFrequency(fT);
 		fT += 137.0e6;
 	}
+
+	initSPI("/dev/spidev0.0");
+	transfer((uint32_t) 1);
+	closeSPI();
 
 	return 0;
 }

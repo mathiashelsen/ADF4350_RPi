@@ -2,13 +2,13 @@
 
 int initSPI(char *devName)
 {
-	memcpy( SPI_config.device, devName, sizeof(*devName) );
+	//memcpy( SPI_config.device, devName, sizeof(*devName) );
 	SPI_config.mode		= SPI_MODE_0;
 	SPI_config.bits		= 8;
 	SPI_config.speed	= 500000;
 	SPI_config.delay	= 0;
 
-	SPI_config.fd		= open(SPI_config.device, O_RDWR);
+	SPI_config.fd		= open(devName, O_RDWR);
 	assert( SPI_config.fd > 0 );
 
 	assert( ioctl(SPI_config.fd, SPI_IOC_WR_MODE, &(SPI_config.mode)) != -1 );
