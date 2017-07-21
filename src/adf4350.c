@@ -15,15 +15,18 @@ int initRegs()
 	register_2.control_bits	= (unsigned int) 2;
 	register_2.pd_polarity	= (unsigned int) 1;
 	register_2.chargepump	= (unsigned int) 15;	// 5mA CP out
-	register_2.muxout		= (unsigned int) 6;		// Digital lock-detect
+	register_2.muxout		= (unsigned int) 4;		// Digital lock-detect
 
 	register_3.control_bits	= (unsigned int) 3;
+	register_3.clock_div	= (unsigned int) 4095;
+	register_3.clock_div_mode = (unsigned int) 0;
 
 	register_4.control_bits	= (unsigned int) 4;
 	register_4.power_en		= (unsigned int) 1;
 	register_4.fb_sel		= (unsigned int) 1;
 
 	register_5.control_bits	= (unsigned int) 5;
+	register_5.ld_pin_mode	= (unsigned int) 1;
 
 	return 0;
 }
@@ -51,11 +54,12 @@ int setFrequency(double frequency)
 		PRESCALER = 1;
 		assert( INT >= 75 );
 	}
+	printf("Target VCO frequency: %f MHz\n", VCO_frequency/1.0e6);
 	
 
 	remainder	= divider - (double)INT;
 
-	MOD			= 2;
+	MOD		= 2;
 	FRAC		= MOD-1;
 	eps			= (fabs(remainder*(double)MOD - (double)FRAC));
 
@@ -70,11 +74,65 @@ int setFrequency(double frequency)
 	assert( FRAC >= 0 && FRAC < MOD );
 	assert( MOD >= 2 && MOD <= 4095 );
 
-	LDF			= (MOD > 0) ? 1 : 0;
+	LDF			= (FRAC > 0) ? 0 : 1;
+	
 
 	printf("%f x %d = %d + %f = %d + %d/%d\n", divider, (int)pow(2.0, (double)RF_DIV),
 		 INT, remainder, INT, FRAC, MOD);
+
+	printf("LDF = %d, BS_CLK_DIV = %d, RF_DIV = %d\n", LDF, BS_CLK_DIV, RF_DIV);
 	
+
+	register_0.frac_value	= (unsigned int) FRAC;
+	register_0.int_value	= (unsigned int) INT;
+
+	register_1.modulus	= (unsigned int) MOD;
+	register_1.phase	= (unsigned int) PHASE;
+	register_1.prescaler	= (unsigned int) PRESCALER;
+
+	register_2.r_counter	= (unsigned int) 2;
+	register_2.ldf		= (unsigned int) LDF;
+
+	register_4.band_sel	= (unsigned int) BS_CLK_DIV;
+	register_4.div_sel	= (unsigned int) RF_DIV;
+
+
+	uint32_t tmp;
+	printf("-- Register 5 --\n");
+	memcpy( &tmp, &register_5, 4);
+	transfer( tmp );
+	usleep(500);
+
+
+	printf("-- Register 4 --\n");
+	memcpy( &tmp, &register_4, 4);
+	transfer( tmp );
+	usleep(500);
+
+
+	printf("-- Register 3 --\n");
+	memcpy( &tmp, &register_3, 4);
+	transfer( tmp );
+	usleep(500);
+
+
+	printf("-- Register 2 --\n");
+	memcpy( &tmp, &register_2, 4);
+	transfer( tmp );
+	usleep(500);
+
+
+	printf("-- Register 1 --\n");
+	memcpy( &tmp, &register_1, 4);
+	transfer( tmp );
+	usleep(500);
+
+
+	printf("-- Register 0 --\n");
+	memcpy( &tmp, &register_0, 4);
+	transfer( tmp );
+	usleep(500);
+
 
 	return 0;
 

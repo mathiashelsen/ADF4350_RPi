@@ -2,13 +2,16 @@
 #define _ADF4350_H
 
 #define REF_CLK 10.0e6
-#define PFD_FREQ 10.0e6
+#define PFD_FREQ 5.0e6
 
 #include <assert.h>
 #include <math.h>
+#include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
+#include "spi.h"
 
 struct
 {
