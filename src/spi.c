@@ -44,3 +44,10 @@ int transfer(uint32_t reg)
 
 	return 0;
 }
+
+int closeSPI()
+{
+	close(SPI_config.fd);
+
+	return 0;
+}

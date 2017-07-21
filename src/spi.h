@@ -26,4 +26,6 @@ int initSPI(char *devName);
 
 int transfer(uint32_t reg);
 
+int closeSPI();
+
 #endif
