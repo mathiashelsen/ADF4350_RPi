@@ -1,5 +1,33 @@
 #include "adf4350.h"
 
+int initRegs()
+{
+	memset( &register_1, 0, 4);
+	memset( &register_2, 0, 4);
+	memset( &register_3, 0, 4);
+	memset( &register_4, 0, 4);
+	memset( &register_5, 0, 4);
+
+	register_0.control_bits	= (unsigned int) 0;
+
+	register_1.control_bits	= (unsigned int) 1;
+
+	register_2.control_bits	= (unsigned int) 2;
+	register_2.pd_polarity	= (unsigned int) 1;
+	register_2.chargepump	= (unsigned int) 15;	// 5mA CP out
+	register_2.muxout		= (unsigned int) 6;		// Digital lock-detect
+
+	register_3.control_bits	= (unsigned int) 3;
+
+	register_4.control_bits	= (unsigned int) 4;
+	register_4.power_en		= (unsigned int) 1;
+	register_4.fb_sel		= (unsigned int) 1;
+
+	register_5.control_bits	= (unsigned int) 5;
+
+	return 0;
+}
+
 int setFrequency(double frequency)
 {
 	double VCO_frequency, divider, remainder, eps;

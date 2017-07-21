@@ -8,6 +8,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 struct
 {
@@ -82,6 +83,7 @@ struct
 	unsigned int reserved_4		: 8;
 } register_5;
 
+int initRegs();
 int setFrequency(double frequency);
 
 #endif
