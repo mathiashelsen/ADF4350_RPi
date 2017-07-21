@@ -30,10 +30,11 @@ int transfer(uint32_t reg)
 	tx_buffer[2] = (uint8_t)((reg >> 8)  & 0xFF);
 	tx_buffer[3] = (uint8_t)((reg >> 0)  & 0xFF);
 
-	printf("TX out: {0x%x, 0x%x, 0x%x, 0x%x}\n", tx_buffer[0],
-		tx_buffer[1],
-		tx_buffer[2],
-		tx_buffer[3]);
+	//printf("TX out: {0x%x, 0x%x, 0x%x, 0x%x}\n", tx_buffer[0],
+	//	tx_buffer[1],
+	//	tx_buffer[2],
+	//	tx_buffer[3]);
+	printf("0x%x\n", reg);
 
 	uint8_t rx_buffer[4] = {0, 0, 0, 0};
 

@@ -9,6 +9,7 @@ int main(void)
 	initRegs();
 
 	setFrequency(151.0e6);
+	setFrequency(151.336e6);
 	
 	closeSPI();
 

@@ -14,16 +14,18 @@ int initRegs()
 
 	register_2.control_bits	= (unsigned int) 2;
 	register_2.pd_polarity	= (unsigned int) 1;
-	register_2.chargepump	= (unsigned int) 15;	// 5mA CP out
-	register_2.muxout		= (unsigned int) 4;		// Digital lock-detect
+	register_2.chargepump	= (unsigned int) 7;	// 5mA CP out
+	register_2.muxout		= (unsigned int) 0;		// Digital lock-detect
+	register_2.ldp		= (unsigned int) 1;
 
 	register_3.control_bits	= (unsigned int) 3;
-	register_3.clock_div	= (unsigned int) 4095;
+	register_3.clock_div	= (unsigned int) 200;
 	register_3.clock_div_mode = (unsigned int) 0;
 
 	register_4.control_bits	= (unsigned int) 4;
 	register_4.power_en		= (unsigned int) 1;
 	register_4.fb_sel		= (unsigned int) 1;
+	register_4.power	= (unsigned int) 0;
 
 	register_5.control_bits	= (unsigned int) 5;
 	register_5.ld_pin_mode	= (unsigned int) 1;
@@ -36,7 +38,10 @@ int setFrequency(double frequency)
 	double VCO_frequency, divider, remainder, eps;
 	int RF_DIV, INT , MOD, FRAC, PHASE, BS_CLK_DIV, PRESCALER, LDF;
 
-	BS_CLK_DIV		= (int)(ceil( PFD_FREQ / 125.0e3 )+1.0);	
+	//BS_CLK_DIV		= (int)(ceil( PFD_FREQ / 125.0e3 )+1.0)*10;
+	BS_CLK_DIV		= 200;
+
+	
 	PHASE			= 1;
 	RF_DIV			= (int) ceil(log(2200.0e6 / frequency)/log(2));
 	assert( RF_DIV >= 0 && RF_DIV < 5 );
@@ -54,6 +59,7 @@ int setFrequency(double frequency)
 		PRESCALER = 1;
 		assert( INT >= 75 );
 	}
+	printf("Target frequency:.....%f MHz\n", frequency/1.0e6);
 	printf("Target VCO frequency: %f MHz\n", VCO_frequency/1.0e6);
 	
 
@@ -90,7 +96,7 @@ int setFrequency(double frequency)
 	register_1.phase	= (unsigned int) PHASE;
 	register_1.prescaler	= (unsigned int) PRESCALER;
 
-	register_2.r_counter	= (unsigned int) 2;
+	register_2.r_counter	= (unsigned int) 1;
 	register_2.ldf		= (unsigned int) LDF;
 
 	register_4.band_sel	= (unsigned int) BS_CLK_DIV;
