@@ -1,7 +1,13 @@
 #ifndef _ADF4350_H
 #define _ADF4350_H
 
-#define REF_CLK 10000000
+#define REF_CLK 10.0e6
+#define PFD_FREQ 10.0e6
+
+#include <assert.h>
+#include <math.h>
+#include <stdio.h>
+#include <stdlib.h>
 
 struct
 {
@@ -76,6 +82,6 @@ struct
 	unsigned int reserved_4		: 8;
 } register_5;
 
-int setFrequency(int frequency);
+int setFrequency(double frequency);
 
 #endif
